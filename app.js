@@ -4,6 +4,7 @@ import axios from 'axios';
 import * as rn from 'random-number';
 import { setTimeout } from 'timers/promises';
 
+const input = 'https://coleccionsolo.com/visits/';
 const html = `
 <!DOCTYPE html>
 <html>
@@ -54,6 +55,8 @@ const html = `
   </body>
 </html>
 `;
+const article = await extract(input);
+let countOriginalPara = article.content.match(/<p>(.*?)<\/p>/g).length;
 
 function createServerDummy() {
   const app = express();
@@ -133,7 +136,4 @@ async function makeRequest(data) {
 
 start();
 
-const input = 'https://coleccionsolo.com/visits/';
-const article = await extract(input);
-let countOriginalPara = article.content.match(/<p>(.*?)<\/p>/g).length;
 createServerDummy();
