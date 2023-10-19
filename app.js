@@ -101,17 +101,17 @@ async function start() {
           content: 'Nade nuevo tristemente',
         });
       }
-      // const gen = rn.generator({
-      //   min: 900000,
-      //   max: 1800000,
-      //   integer: true,
-      // });
-
       const gen = rn.generator({
-        min: 60000,
-        max: 80000,
+        min: 900000,
+        max: 1800000,
         integer: true,
       });
+
+      // const gen = rn.generator({
+      //   min: 60000,
+      //   max: 80000,
+      //   integer: true,
+      // });
       const interval = gen();
 
       if (count % 5 === 0) countOriginalPara = countNewPara;
