@@ -73,53 +73,47 @@ function createServerDummy() {
 
   server.keepAliveTimeout = 120 * 1000;
   server.headersTimeout = 120 * 1000;
-
+  createServerDummy();
   return server;
 }
 
-async function start() {
-  let count = 1;
-  const input = 'https://coleccionsolo.com/visits/';
-  const article = await extract(input);
-  let countOriginalPara = article.content.match(/<p>(.*?)<\/p>/g).length;
-  createServerDummy();
+async function start(count = 0) {
+  try {
+    console.log(count);
+    const article = await extract(input);
 
-  while (true) {
-    try {
-      const article = await extract(input);
+    let countNewPara = article.content.match(/<p>(.*?)<\/p>/g).length;
 
-      let countNewPara = article.content.match(/<p>(.*?)<\/p>/g).length;
-
-      if (countNewPara !== countOriginalPara) {
-        makeRequest({
-          title: 'Si consiguio 👌👌👌',
-          content: 'Ha conseguido nueva información apresurate !!!!!!!',
-        });
-      } else {
-        makeRequest({
-          title: 'No consiguio 🦗🦗🦗',
-          content: 'Nade nuevo tristemente',
-        });
-      }
-      const gen = rn.generator({
-        min: 900000,
-        max: 1800000,
-        integer: true,
+    if (countNewPara !== countOriginalPara) {
+      makeRequest({
+        title: 'Si consiguio 👌👌👌',
+        content: 'Ha conseguido nueva información apresurate !!!!!!!',
       });
-
-      // const gen = rn.generator({
-      //   min: 60000,
-      //   max: 80000,
-      //   integer: true,
-      // });
-      const interval = gen();
-
-      if (count % 5 === 0) countOriginalPara = countNewPara;
-      count++;
-      await setTimeout(interval);
-    } catch (err) {
-      console.error(err);
+    } else {
+      makeRequest({
+        title: 'No consiguio 🦗🦗🦗',
+        content: 'Nade nuevo tristemente',
+      });
     }
+    const gen = rn.generator({
+      min: 900000,
+      max: 1800000,
+      integer: true,
+    });
+
+    // const gen = rn.generator({
+    //   min: 60000,
+    //   max: 80000,
+    //   integer: true,
+    // });
+    const interval = gen();
+
+    if (count % 5 === 0) countOriginalPara = countNewPara;
+    count++;
+    await setTimeout(interval);
+    start(count);
+  } catch (err) {
+    console.error(err);
   }
 }
 
@@ -138,3 +132,8 @@ async function makeRequest(data) {
 }
 
 start();
+
+const input = 'https://coleccionsolo.com/visits/';
+const article = await extract(input);
+let countOriginalPara = article.content.match(/<p>(.*?)<\/p>/g).length;
+createServerDummy();
