@@ -76,8 +76,6 @@ function createServerDummy() {
 
   server.keepAliveTimeout = 120 * 1000;
   server.headersTimeout = 120 * 1000;
-  createServerDummy();
-  return server;
 }
 
 async function start(count = 0) {
